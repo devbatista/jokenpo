@@ -2,7 +2,9 @@ class Api::V1::PlaysController < Api::V1::ApiController
   
   def index
     options = ["Pedra", "Papel", "Tesoura"]
-    
+
+    return render json: {error: "Envie algum dado com a chave 'option'"} unless params[:option]
+    return render json: {error: "Chave vazia, envie pedra, papel ou tesoura'"} if params[:option].empty?
     return render json: {error: "Opção inválida, escolha pedra, papel ou tesoura"} unless options.include?(params[:option].capitalize)
     
     @return = {you: params[:option].capitalize, pc: options.sample, result: ''}
