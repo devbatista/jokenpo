@@ -43,3 +43,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Hability CORS
 gem 'rack-cors'
 gem 'rack-attack'
+
+# Use Json Web Token (JWT) for token base authentication
+gem 'jwt'
+
+# Use ActiveModel has_secure_password
+gem 'bcrypt', '~> 3.1.7'
