@@ -1,4 +1,6 @@
 class Api::PlaysController < Api::ApiController
+
+  before_action :authorize_request
   
   def index
     options = ["Pedra", "Papel", "Tesoura"]
@@ -7,15 +9,15 @@ class Api::PlaysController < Api::ApiController
     return render json: {error: "Chave vazia, envie pedra, papel ou tesoura'"} if params[:option].empty?
     return render json: {error: "Opção inválida, escolha pedra, papel ou tesoura"} unless options.include?(params[:option].capitalize)
     
-    @return = {you: params[:option].capitalize, pc: options.sample, result: ''}
+    data = {user: current_user.name, you: params[:option].capitalize, pc: options.sample, result: ''}
 
-    if @return[:you] == @return[:pc]
-      @return[:result] = 'Empate' 
+    if data[:you] == data[:pc]
+      data[:result] = 'Empate' 
     else
-      @return[:result] = ganhou_perdeu(@return[:you], @return[:pc])
+      data[:result] = ganhou_perdeu(data[:you], data[:pc])
     end
 
-    render json: @return
+    render json: data
 
   end
 
@@ -31,6 +33,14 @@ class Api::PlaysController < Api::ApiController
       end
 
       retorno
+    end
+
+    def current_user
+      authorization = request.headers['Authorization']
+      authorization = authorization.split(' ').last if authorization
+      
+      decoded = JsonWebToken.decode(authorization)
+      current_user = User.find(@decoded[:user_id])
     end
 
 end
