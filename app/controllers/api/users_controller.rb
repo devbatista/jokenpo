@@ -1,4 +1,4 @@
-class API::V1::UsersController < Api::V1::ApiController
+class Api::UsersController < Api::ApiController
   before_action :authorize_request, except: :create
   before_action :find_user, except: %i[create index]
 
@@ -16,6 +16,9 @@ class API::V1::UsersController < Api::V1::ApiController
   # POST /users
   def create
     @user = User.new(user_params)
+    
+    render json: { errors: 'password_confirmation is required' }, status: :unprocessable_entity unless @user.password_confirmation
+    
     if @user.save
       render json: @user, status: :created
     else
