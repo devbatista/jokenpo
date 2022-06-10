@@ -1,4 +1,4 @@
-class Api::V1::PlaysController < Api::V1::ApiController
+class Api::PlaysController < Api::ApiController
   
   def index
     options = ["Pedra", "Papel", "Tesoura"]
