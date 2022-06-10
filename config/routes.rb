@@ -5,6 +5,6 @@ Rails.application.routes.draw do
 
     post '/login', to: 'authentication#login'
 
-    post '/jogar', to: 'plays#index'
+    post '/play', to: 'plays#index'
   end
 end
