@@ -1,6 +1,7 @@
 class Api::UsersController < Api::ApiController
   before_action :authorize_request, except: :create
   before_action :find_user, except: %i[create index]
+  before_action :authorized, on: :index
 
   # GET /users
   def index
@@ -8,7 +9,7 @@ class Api::UsersController < Api::ApiController
     render json: @users, status: :ok
   end
 
-  # GET /users/{username}
+  # GET /uses/{user_id}
   def show
     render json: @user, status: :ok
   end
@@ -18,7 +19,7 @@ class Api::UsersController < Api::ApiController
     @user = User.new(user_params)
     
     render json: { errors: 'password_confirmation is required' }, status: :unprocessable_entity unless @user.password_confirmation
-    
+
     if @user.save
       render json: @user, status: :created
     else
@@ -46,7 +47,7 @@ class Api::UsersController < Api::ApiController
     end
 
     def user_params
-      params.permit(:avatar, :name, :username, :email, :cpf, :password, :password_confirmation)
+      params.permit(:avatar, :name, :username, :email, :cpf, :password, :password_confirmation, :admin)
     end
 
 end
