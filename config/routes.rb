@@ -8,11 +8,11 @@ Rails.application.routes.draw do
     put '/user/:user_id', to: 'users#update'
     delete '/user/:user_id', to: 'users#destroy'
 
-    # For user
+    # For current user
     get '/user', to: 'users#show'
     post '/users', to: 'users#create'
     put '/change', to: 'users#change'
-    delete '/user', to 'users#exclude'
+    delete '/user', to: 'users#exclude'
 
     post '/login', to: 'authentication#login'
 
