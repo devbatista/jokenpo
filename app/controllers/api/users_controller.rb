@@ -22,6 +22,7 @@ class Api::UsersController < Api::ApiController
   # POST /users
   def create
     @user = User.new(user_params)
+    @user.cpf = CPF.new(user_params[:cpf]).formatted
     
     return password_confirmation? unless @user.password_confirmation
 
