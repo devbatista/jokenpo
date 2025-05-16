@@ -1,123 +1,130 @@
-
 # Jokenpo API
 
-Projeto simples de API REST para simular o jogo **Jokenpo** (Pedra, Papel e Tesoura).
+API REST desenvolvida com Ruby on Rails para simular o jogo Pedra, Papel e Tesoura contra a máquina.
 
-## Tecnologias
+## Tecnologias Utilizadas
 
-- Ruby on Rails  
+- Ruby on Rails
 - PostgreSQL
-- JSON API  
+- JSON API
 
-## Como rodar
+## Como Rodar o Projeto Localmente
 
-1. Clone o repositório:  
+1. **Clone o repositório:**
+
    ```bash
    git clone https://github.com/devbatista/jokenpo.git
    cd jokenpo
    ```
 
-2. Instale as dependências:  
+2. **Instale as dependências:**
+
    ```bash
    bundle install
    ```
 
-3. Configure o banco de dados no arquivo `.env` ou `config/database.yml` conforme seu ambiente.
+3. **Configure o banco de dados:**
 
-4. Rode as migrações:  
+   Ajuste o arquivo `config/database.yml` conforme seu ambiente.
+
+4. **Crie e migre o banco de dados:**
+
    ```bash
+   rails db:create
    rails db:migrate
    ```
 
-5. Inicie o servidor:  
+5. **Inicie o servidor:**
+
    ```bash
    rails server
    ```
 
+   O servidor estará disponível em `http://localhost:3000`.
+
 ## Endpoints da API
 
-### 1. Criar uma nova partida
+### 1. Criar uma nova jogada
 
-- **POST** `/matches`
+- **Endpoint:** `POST /api/plays`
+- **Parâmetros (JSON):**
 
-- **Parâmetros:**  
   ```json
   {
-    "player1_move": "pedra" | "papel" | "tesoura",
-    "player2_move": "pedra" | "papel" | "tesoura"
+    "play": "pedra" | "papel" | "tesoura"
   }
   ```
 
-- **Exemplo de request:**  
+- **Exemplo de requisição:**
+
   ```bash
-  curl -X POST http://localhost:3000/matches \
+  curl -X POST http://localhost:3000/api/plays \
   -H "Content-Type: application/json" \
-  -d '{"player1_move":"pedra","player2_move":"tesoura"}'
+  -d '{"play":"pedra"}'
   ```
 
-- **Resposta:**  
+- **Resposta (JSON):**
+
   ```json
   {
-    "id": 1,
-    "player1_move": "pedra",
-    "player2_move": "tesoura",
-    "winner": "player1",
-    "created_at": "2025-05-16T12:00:00Z"
+    "play": "pedra",
+    "machine_play": "tesoura",
+    "winner": "player" // ou "machine" ou "empate"
   }
   ```
 
-### 2. Listar todas as partidas
+### 2. Listar todas as jogadas
 
-- **GET** `/matches`
+- **Endpoint:** `GET /api/plays`
+- **Exemplo de requisição:**
 
-- **Exemplo de request:**  
   ```bash
-  curl http://localhost:3000/matches
+  curl http://localhost:3000/api/plays
   ```
 
-- **Resposta:**  
+- **Resposta (JSON):**
+
   ```json
   [
     {
       "id": 1,
-      "player1_move": "pedra",
-      "player2_move": "tesoura",
-      "winner": "player1",
+      "play": "pedra",
+      "machine_play": "tesoura",
+      "winner": "player",
       "created_at": "2025-05-16T12:00:00Z"
     },
     {
       "id": 2,
-      "player1_move": "papel",
-      "player2_move": "papel",
+      "play": "papel",
+      "machine_play": "papel",
       "winner": "empate",
       "created_at": "2025-05-16T12:05:00Z"
     }
   ]
   ```
 
-### 3. Consultar uma partida específica
+### 3. Consultar uma jogada específica
 
-- **GET** `/matches/:id`
+- **Endpoint:** `GET /api/plays/:id`
+- **Exemplo de requisição:**
 
-- **Exemplo de request:**  
   ```bash
-  curl http://localhost:3000/matches/1
+  curl http://localhost:3000/api/plays/1
   ```
 
-- **Resposta:**  
+- **Resposta (JSON):**
+
   ```json
   {
     "id": 1,
-    "player1_move": "pedra",
-    "player2_move": "tesoura",
-    "winner": "player1",
+    "play": "pedra",
+    "machine_play": "tesoura",
+    "winner": "player",
     "created_at": "2025-05-16T12:00:00Z"
   }
   ```
 
 ## Observações
 
-- Os valores válidos para as jogadas são `"pedra"`, `"papel"` e `"tesoura"` (sempre em letras minúsculas).  
-- O campo `winner` pode conter `"player1"`, `"player2"` ou `"empate"`.
-
----
+- As jogadas válidas para o campo `play` são: `"pedra"`, `"papel"` e `"tesoura"`.
+- O campo `winner` indica o vencedor da jogada: `"player"`, `"machine"` ou `"empate"`.
