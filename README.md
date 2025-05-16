@@ -6,7 +6,7 @@ Projeto simples de API REST para simular o jogo **Jokenpo** (Pedra, Papel e Teso
 ## Tecnologias
 
 - Ruby on Rails  
-- PostgreSQL (ou outro banco configurado)  
+- PostgreSQL
 - JSON API  
 
 ## Como rodar
